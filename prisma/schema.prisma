@@ -1,0 +1,99 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         String     @default("ADMIN")
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+}
+
+model Category {
+  id            String        @id @default(uuid())
+  name          String
+  slug          String        @unique
+  icon          String?
+  active        Boolean       @default(true)
+  order         Int           @default(0)
+  createdAt     DateTime      @default(now())
+  products      Product[]
+  subcategories Subcategory[]
+}
+
+model Subcategory {
+  id         String    @id @default(uuid())
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name       String
+  slug       String
+  active     Boolean   @default(true)
+  order      Int       @default(0)
+  createdAt  DateTime  @default(now())
+  products   Product[]
+}
+
+model Product {
+  id            String         @id @default(uuid())
+  name          String
+  categoryId    String
+  category      Category       @relation(fields: [categoryId], references: [id])
+  subcategoryId String?
+  subcategory   Subcategory?   @relation(fields: [subcategoryId], references: [id])
+  model         String
+  storage       String?
+  ram           String?
+  color         String?
+  condition     String         // "NOVO_LACRADO" | "SEMINOVO"
+  priceSource   String         @default("PRECO_DO_DIA") // "PRECO_DO_DIA" | "LOJA_FISICA"
+  originalPrice Float
+  margin        Float          @default(0)
+  finalPrice    Float
+  active        Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  priceHistory  PriceHistory[]
+}
+
+model PriceHistory {
+  id              String   @id @default(uuid())
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  oldPrice        Float
+  newPrice        Float
+  margin          Float
+  finalPrice      Float
+  userResponsible String   @default("Administrador")
+  reason          String?
+  createdAt       DateTime @default(now())
+}
+
+model Setting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  userName  String?
+  action    String
+  entity    String
+  details   String
+  ip        String?
+  createdAt DateTime @default(now())
+}
