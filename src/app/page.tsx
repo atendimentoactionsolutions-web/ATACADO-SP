@@ -467,19 +467,11 @@ export default function CatalogPage() {
                       className="bg-white rounded-2xl p-5 border border-[#e2e8f0] hover:border-[#cbd5e1] shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                     >
                       <div>
-                        {/* Top Bar: Title + Ver Button */}
-                        <div className="flex items-start justify-between gap-2">
+                        {/* Top Bar: Title */}
+                        <div>
                           <h3 className="text-[13px] font-extrabold uppercase tracking-tight text-[#0f172a] leading-tight">
                             {group.modelTitle}
                           </h3>
-
-                          <button
-                            type="button"
-                            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#f1f5f9] hover:bg-[#e2e8f0] text-[11px] font-medium text-[#475569] transition-colors shrink-0"
-                          >
-                            <Eye className="w-3 h-3 text-[#64748b]" />
-                            <span>Ver</span>
-                          </button>
                         </div>
 
                         {/* Tags Bar: RAM (apenas para Mac/MacBook) & Storage */}
