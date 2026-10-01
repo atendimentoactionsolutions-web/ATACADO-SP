@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import AppleLogo from "./AppleLogo";
 import {
-  Apple,
   LayoutDashboard,
   CalendarCheck,
   Store,
@@ -95,10 +95,10 @@ export default function AdminSidebar({ mobileOpen, onCloseMobile }: AdminSidebar
       <div className="h-16 px-6 flex items-center justify-between border-b border-[#e5e5ea]">
         <Link href="/admin/dashboard" className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-xl bg-black flex items-center justify-center text-white shadow-sm">
-            <Apple className="w-4 h-4 fill-current" />
+            <AppleLogo className="w-4 h-4 fill-current" />
           </div>
           <div>
-            <div className="font-semibold text-sm tracking-tight text-[#1d1d1f]">iFindz Admin</div>
+            <div className="font-semibold text-sm tracking-tight text-[#1d1d1f]">ATACADO SP Admin</div>
             <div className="text-[10px] text-[#86868b] -mt-0.5">Gestão Apple</div>
           </div>
         </Link>

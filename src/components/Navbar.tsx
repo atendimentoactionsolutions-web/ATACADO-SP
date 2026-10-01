@@ -1,16 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { Apple, ShieldCheck, User, Sparkles } from "lucide-react";
+import { ShieldCheck, User, Sparkles } from "lucide-react";
+import AppleLogo from "./AppleLogo";
 
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-[#e5e5ea]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-xl bg-black flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
-            <Apple className="w-5 h-5 fill-current" />
+            <AppleLogo className="w-5 h-5 fill-current" />
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-lg tracking-tight text-[#1d1d1f]">

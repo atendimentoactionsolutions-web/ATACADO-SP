@@ -2,8 +2,9 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Apple, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
+import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import AppleLogo from "@/components/AppleLogo";
 
 function LoginForm() {
   const router = useRouter();
@@ -118,11 +119,11 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 group mb-3">
             <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105">
-              <Apple className="w-7 h-7 fill-current" />
+              <AppleLogo className="w-7 h-7 fill-current" />
             </div>
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-[#1d1d1f]">
-            iFindz Administrativo
+            ATACADO SP Administrativo
           </h1>
           <p className="mt-1 text-xs text-[#86868b]">
             Acesso restrito para gestão de preços e produtos Apple
