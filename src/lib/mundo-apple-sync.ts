@@ -179,9 +179,11 @@ export async function syncMundoAppleLive(userResponsible = "Sincronização Mund
   for (const item of Array.from(grouped.values())) {
     const categoryId = getCatId(item.categorySlug);
 
-    // Aplica regra de preço: +R$ 200 em iPhones novos no Preço do Dia
+    // Aplica tabela oficial de margens de lucro ATACADO SP
     const calc = calculateFinalPrice(
       {
+        name: item.name,
+        model: item.model,
         categorySlug: item.categorySlug,
         condition: item.condition,
         priceSource: "PRECO_DO_DIA",
