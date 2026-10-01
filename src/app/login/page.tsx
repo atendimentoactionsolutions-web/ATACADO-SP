@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Lock, Mail, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
+import { Lock, Mail, User, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import AppleLogo from "@/components/AppleLogo";
 
@@ -11,8 +11,8 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const from = searchParams.get("from") || "/admin/dashboard";
 
-  const [email, setEmail] = useState("admin@ifindz.com.br");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,16 +54,16 @@ function LoginForm() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-xs font-semibold text-[#1d1d1f] mb-1.5">
-            E-mail Administrativo
+            Usuário ou E-mail
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <User className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
-              type="email"
+              type="text"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@ifindz.com.br"
+              placeholder="Digite seu usuário ou e-mail (ex: jaciara)"
               className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#f5f5f7] text-sm text-[#1d1d1f] placeholder-[#86868b] focus:outline-none focus:ring-2 focus:ring-[#0071e3]/30 border border-transparent focus:border-[#0071e3]"
             />
           </div>

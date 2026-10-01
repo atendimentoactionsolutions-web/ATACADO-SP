@@ -15,18 +15,30 @@ async function main() {
   await prisma.setting.deleteMany();
   await prisma.user.deleteMany();
 
-  // 2. Criar Usuário Administrador
+  // 2. Criar Usuários Administradores
   const adminPasswordHash = await bcrypt.hash("admin123", 10);
   const admin = await prisma.user.create({
     data: {
-      name: "Administrador iFindz",
-      email: "admin@ifindz.com.br",
+      name: "Administrador ATACADO SP",
+      email: "admin@atacadosp.com.br",
       passwordHash: adminPasswordHash,
       role: "ADMIN",
       active: true,
     },
   });
   console.log("✓ Administrador criado:", admin.email);
+
+  const jaciaraPasswordHash = await bcrypt.hash("jaciara", 10);
+  const jaciara = await prisma.user.create({
+    data: {
+      name: "jaciara",
+      email: "jaciara@atacadosp.com.br",
+      passwordHash: jaciaraPasswordHash,
+      role: "ADMIN",
+      active: true,
+    },
+  });
+  console.log("✓ Usuário criado:", jaciara.name);
 
   // 3. Configurações Globais
   const defaultSettings = [

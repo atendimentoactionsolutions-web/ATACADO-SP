@@ -16,8 +16,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase().trim() },
+    const identifier = (email || "").toLowerCase().trim();
+
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: identifier },
+          { name: { equals: identifier } },
+        ],
+      },
     });
 
     if (!user || !user.active) {
