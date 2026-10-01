@@ -3,6 +3,14 @@ import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+// Monitor global para sincronização automática ao vivo em segundo plano
+const globalForSync = globalThis as unknown as {
+  lastMundoAppleSync?: number;
+  isMundoAppleSyncing?: boolean;
+};
+
+const AUTO_SYNC_INTERVAL_MS = 3 * 60 * 1000; // a cada 3 minutos
+
 /**
  * GET /api/catalog/preco-do-dia
  * Public API for official catalog
@@ -15,6 +23,22 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(req: NextRequest) {
   try {
+    // Dispara auto-sincronização ao vivo em segundo plano se já passou do intervalo
+    const now = Date.now();
+    const lastSync = globalForSync.lastMundoAppleSync || 0;
+    if (!globalForSync.isMundoAppleSyncing && now - lastSync > AUTO_SYNC_INTERVAL_MS) {
+      globalForSync.isMundoAppleSyncing = true;
+      import("@/lib/mundo-apple-sync")
+        .then(({ syncMundoAppleLive }) => syncMundoAppleLive("Auto Sync Ao Vivo"))
+        .then(() => {
+          globalForSync.lastMundoAppleSync = Date.now();
+          globalForSync.isMundoAppleSyncing = false;
+        })
+        .catch((err) => {
+          console.error("Auto Sync Ao Vivo falhou:", err);
+          globalForSync.isMundoAppleSyncing = false;
+        });
+    }
     const { searchParams } = new URL(req.url);
     const categorySlug = searchParams.get("category");
     const search = searchParams.get("search");
