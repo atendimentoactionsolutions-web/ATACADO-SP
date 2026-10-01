@@ -2,8 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Lock, Mail, User, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
-import Link from "next/link";
+import { Lock, User, ArrowRight, AlertCircle } from "lucide-react";
 import AppleLogo from "@/components/AppleLogo";
 
 function LoginForm() {
@@ -91,22 +90,10 @@ function LoginForm() {
           disabled={loading}
           className="w-full mt-2 py-3 px-4 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-sm disabled:opacity-50"
         >
-          <span>{loading ? "Autenticando..." : "Entrar no Painel"}</span>
+          <span>{loading ? "Autenticando..." : "Entrar"}</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </form>
-
-      {/* Quick Credential Hint */}
-      <div className="mt-6 pt-5 border-t border-[#f5f5f7] bg-[#fbfbfd] p-3 rounded-xl border">
-        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#1d1d1f]">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#34c759]" />
-          <span>Acesso Padrão de Demonstração:</span>
-        </div>
-        <div className="mt-1 text-[11px] text-[#86868b] space-y-0.5 font-mono">
-          <div>Email: admin@ifindz.com.br</div>
-          <div>Senha: admin123</div>
-        </div>
-      </div>
     </div>
   );
 }
@@ -117,17 +104,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 group mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105">
+          <div className="inline-flex items-center gap-2 mb-3">
+            <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-md">
               <AppleLogo className="w-7 h-7 fill-current" />
             </div>
-          </Link>
+          </div>
           <h1 className="text-2xl font-bold tracking-tight text-[#1d1d1f]">
-            ATACADO SP Administrativo
+            ATACADO SP
           </h1>
-          <p className="mt-1 text-xs text-[#86868b]">
-            Acesso restrito para gestão de preços e produtos Apple
-          </p>
         </div>
 
         {/* Suspense boundary for useSearchParams */}
@@ -140,16 +124,6 @@ export default function LoginPage() {
         >
           <LoginForm />
         </Suspense>
-
-        {/* Back Link */}
-        <div className="text-center mt-6">
-          <Link
-            href="/"
-            className="text-xs text-[#86868b] hover:text-[#0071e3] transition-colors"
-          >
-            ← Voltar ao Catálogo Público Preço do Dia
-          </Link>
-        </div>
       </div>
     </div>
   );
