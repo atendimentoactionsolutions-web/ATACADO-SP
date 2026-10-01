@@ -17,8 +17,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-black flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
-            <AppleLogo className="w-5 h-5 fill-current" />
+          <div className="w-9 h-9 rounded-xl bg-black flex items-center justify-center p-2 shadow-sm transition-transform group-hover:scale-105">
+            <AppleLogo className="w-full h-full" variant="white" />
           </div>
           <div className="flex flex-col">
             <span className="font-semibold text-lg tracking-tight text-[#1d1d1f]">

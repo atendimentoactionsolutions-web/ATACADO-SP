@@ -105,8 +105,8 @@ export default function LoginPage() {
         {/* Brand Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-3">
-            <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-md">
-              <AppleLogo className="w-7 h-7 fill-current" />
+            <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center p-3 shadow-md">
+              <AppleLogo className="w-full h-full" variant="white" />
             </div>
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-[#1d1d1f]">
