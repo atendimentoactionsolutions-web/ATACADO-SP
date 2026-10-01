@@ -146,7 +146,7 @@ export default function CatalogPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("iphone");
   const [search, setSearch] = useState<string>("");
   const [sort, setSort] = useState<string>("default");
   const [selectedStorage, setSelectedStorage] = useState<string>("all");
@@ -380,9 +380,7 @@ export default function CatalogPage() {
             return (
               <button
                 key={c.id}
-                onClick={() =>
-                  setSelectedCategory(selectedCategory === c.slug ? "all" : c.slug)
-                }
+                onClick={() => setSelectedCategory(c.slug)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all shrink-0 border ${
                   isSelected
                     ? "bg-[#0b101b] text-white border-[#0b101b] shadow-sm"
