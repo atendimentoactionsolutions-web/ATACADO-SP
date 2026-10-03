@@ -361,7 +361,7 @@ export default function CatalogPage() {
     const text = encodeURIComponent(
       `Olá ATACADO SP! Tenho interesse no *${group.modelTitle}${storageText}${ramText}*${colorText} por *${formatBRL(
         variant.price
-      )}* anunciado no Preço do Dia oficial.\n\n*Condição:* Pagamento Somente à Vista\n*Retirada/Localização:* Santa Efigênia - SP`
+      )}*`
     );
     return `https://wa.me/5511930089729?text=${text}`;
   };
