@@ -52,6 +52,18 @@ async function main() {
   });
   console.log("✓ Usuário criado:", marcelo.name);
 
+  const brunaPasswordHash = await bcrypt.hash("bruna", 10);
+  const bruna = await prisma.user.create({
+    data: {
+      name: "bruna",
+      email: "bruna@atacadosp.com.br",
+      passwordHash: brunaPasswordHash,
+      role: "ADMIN",
+      active: true,
+    },
+  });
+  console.log("✓ Usuário criado:", bruna.name);
+
   // 3. Configurações Globais
   const defaultSettings = [
     { key: "iphone_margin", value: "200", description: "Margem automática para iPhones Novos no Preço do Dia (R$)" },
