@@ -602,13 +602,6 @@ export default function CatalogPage() {
           <div>
             Preço do Dia Oficial. Todos os direitos reservados. Apple é marca registrada da Apple Inc.
           </div>
-
-          <a
-            href="/admin/dashboard"
-            className="text-[#0071e3] hover:underline font-medium"
-          >
-            Acesso Restrito Administrativo
-          </a>
         </div>
       </footer>
     </div>

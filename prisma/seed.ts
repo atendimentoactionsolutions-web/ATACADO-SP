@@ -34,7 +34,7 @@ async function main() {
       name: "jaciara",
       email: "jaciara@atacadosp.com.br",
       passwordHash: jaciaraPasswordHash,
-      role: "ADMIN",
+      role: "USER",
       active: true,
     },
   });
@@ -46,7 +46,7 @@ async function main() {
       name: "marcelo",
       email: "marcelo@atacadosp.com.br",
       passwordHash: marceloPasswordHash,
-      role: "ADMIN",
+      role: "USER",
       active: true,
     },
   });
@@ -58,7 +58,7 @@ async function main() {
       name: "bruna",
       email: "bruna@atacadosp.com.br",
       passwordHash: brunaPasswordHash,
-      role: "ADMIN",
+      role: "USER",
       active: true,
     },
   });

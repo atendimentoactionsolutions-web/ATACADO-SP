@@ -41,7 +41,19 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+
+    // 3. Somente o acesso principal (admin) tem acesso às rotas /admin
+    if (pathname.startsWith("/admin")) {
+      const isPrincipalAdmin =
+        payload.role === "ADMIN" &&
+        (payload.name === "admin" || payload.email === "admin@atacadosp.com.br");
+
+      if (!isPrincipalAdmin) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+    }
+
     return NextResponse.next();
   } catch (err) {
     const loginUrl = new URL("/login", req.url);
