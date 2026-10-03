@@ -373,7 +373,7 @@ export default function CatalogPage() {
       {/* Main Content Area */}
       <main className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
         {/* Category Pills Bar */}
-        <div className="flex items-center gap-2.5 overflow-x-auto pb-4 pt-1 scrollbar-none mb-4">
+        <div className="grid grid-cols-3 sm:flex sm:items-center sm:overflow-x-auto gap-2 sm:gap-2.5 mb-5">
           {categories.map((c) => {
             const Icon = CATEGORY_ICONS[c.slug] || Smartphone;
             const isSelected = selectedCategory === c.slug;
@@ -381,14 +381,14 @@ export default function CatalogPage() {
               <button
                 key={c.id}
                 onClick={() => setSelectedCategory(c.slug)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all shrink-0 border ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-5 py-2.5 rounded-2xl sm:rounded-full text-xs sm:text-sm font-semibold transition-all sm:shrink-0 border ${
                   isSelected
                     ? "bg-[#0b101b] text-white border-[#0b101b] shadow-sm"
                     : "bg-white text-[#334155] border-[#e2e8f0] hover:border-[#cbd5e1] hover:bg-[#f8fafc]"
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isSelected ? "text-white" : "text-[#475569]"}`} />
-                <span>{c.name}</span>
+                <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isSelected ? "text-white" : "text-[#475569]"}`} />
+                <span className="truncate">{c.name}</span>
               </button>
             );
           })}
