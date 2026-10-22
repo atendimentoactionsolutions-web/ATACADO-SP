@@ -2,7 +2,12 @@ import prisma from "./prisma";
 import { calculateFinalPrice } from "./price-calculator";
 import { recordPriceHistory, logAudit } from "./audit";
 
-const MUNDO_APPLE_URL = "https://mundo-apple-buscador.onrender.com";
+const MUNDO_APPLE_URLS = [
+  process.env.MUNDO_APPLE_URL,
+  "http://127.0.0.1:3333",
+  "https://srv2058756.hstgr.cloud",
+  "https://mundo-apple-buscador.onrender.com",
+].filter(Boolean) as string[];
 const USERNAME = "admin";
 const PASSWORD = "fornecedor2026!";
 
