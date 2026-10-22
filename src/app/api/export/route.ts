@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import * as XLSX from "xlsx";
-import { formatBRL } from "@/lib/price-calculator";
+import { calculateFinalPrice, formatBRL } from "@/lib/price-calculator";
 
 export const dynamic = "force-dynamic";
 
