@@ -34,40 +34,62 @@ export interface SyncMundoAppleResult {
  * e sincroniza no Preço do Dia!
  */
 export async function syncMundoAppleLive(userResponsible = "Sincronização Mundo Apple"): Promise<SyncMundoAppleResult> {
-  // 1. Autenticar no site Mundo Apple
-  const loginRes = await fetch(`${MUNDO_APPLE_URL}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      username: USERNAME,
-      password: PASSWORD,
-    }),
-  });
+  let catalogPayload: any = null;
+  let activeUrl = MUNDO_APPLE_URLS[0];
+  let lastError = "";
 
-  if (!loginRes.ok) {
-    throw new Error(`Falha ao autenticar no Mundo Apple Buscador (HTTP ${loginRes.status})`);
+  for (const baseUrl of MUNDO_APPLE_URLS) {
+    try {
+      // 1. Autenticar no site Mundo Apple Buscador
+      const loginRes = await fetch(`${baseUrl}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: USERNAME,
+          password: PASSWORD,
+        }),
+        cache: "no-store",
+      });
+
+      if (!loginRes.ok) {
+        lastError = `Falha ao autenticar em ${baseUrl} (HTTP ${loginRes.status})`;
+        continue;
+      }
+
+      const cookieHeader = loginRes.headers.get("set-cookie");
+      const cookie = cookieHeader ? cookieHeader.split(";")[0] : "";
+      const loginData = await loginRes.json();
+
+      if (!loginData.success) {
+        lastError = loginData.error || `Erro de login em ${baseUrl}`;
+        continue;
+      }
+
+      // 2. Puxar produtos do dia ao vivo
+      const productsRes = await fetch(`${baseUrl}/api/products`, {
+        headers: {
+          Cookie: cookie,
+        },
+        cache: "no-store",
+      });
+
+      if (!productsRes.ok) {
+        lastError = `Falha ao obter produtos em ${baseUrl} (HTTP ${productsRes.status})`;
+        continue;
+      }
+
+      catalogPayload = await productsRes.json();
+      activeUrl = baseUrl;
+      break;
+    } catch (err: any) {
+      lastError = err?.message || String(err);
+    }
   }
 
-  const cookieHeader = loginRes.headers.get("set-cookie");
-  const cookie = cookieHeader ? cookieHeader.split(";")[0] : "";
-  const loginData = await loginRes.json();
-
-  if (!loginData.success) {
-    throw new Error(loginData.error || "Erro de login no Mundo Apple Buscador");
+  if (!catalogPayload) {
+    throw new Error(`Falha ao conectar no Mundo Apple Buscador: ${lastError}`);
   }
 
-  // 2. Puxar produtos do dia ao vivo
-  const productsRes = await fetch(`${MUNDO_APPLE_URL}/api/products`, {
-    headers: {
-      Cookie: cookie,
-    },
-  });
-
-  if (!productsRes.ok) {
-    throw new Error(`Falha ao obter produtos do Mundo Apple (HTTP ${productsRes.status})`);
-  }
-
-  const catalogPayload = await productsRes.json();
   const rawList: any[] = Array.isArray(catalogPayload.data)
     ? catalogPayload.data
     : Array.isArray(catalogPayload)
@@ -292,7 +314,7 @@ export async function syncMundoAppleLive(userResponsible = "Sincronização Mund
     updatedCount,
     unchangedCount,
     date: latestDate,
-    source: "https://mundo-apple-buscador.onrender.com",
+    source: activeUrl,
     dollarRate,
     dollarVariation,
   };
