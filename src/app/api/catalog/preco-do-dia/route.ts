@@ -9,7 +9,7 @@ const globalForSync = globalThis as unknown as {
   isMundoAppleSyncing?: boolean;
 };
 
-const AUTO_SYNC_INTERVAL_MS = 3 * 60 * 1000; // a cada 3 minutos
+const AUTO_SYNC_INTERVAL_MS = 60 * 1000; // a cada 1 minuto ao vivo
 
 /**
  * GET /api/catalog/preco-do-dia
