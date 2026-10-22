@@ -10,6 +10,7 @@ const JWT_SECRET = new TextEncoder().encode(
 const PUBLIC_PATHS = [
   "/login",
   "/api/auth/login",
+  "/api/sync/internal",
   "/apple-white.png",
   "/apple-black.png",
   "/apple-logo.png",
