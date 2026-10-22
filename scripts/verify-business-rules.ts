@@ -172,22 +172,26 @@ async function runTests() {
     // CENÁRIO 7: Alteração de preço -> recalcula automaticamente.
     // -------------------------------------------------------------------------
     const s7Initial = calculateFinalPrice({
+      name: "IPHONE 17 PRO MAX 256GB",
+      model: "IPHONE 17 PRO MAX",
       categorySlug: "iphone",
       condition: "NOVO_LACRADO",
       priceSource: "PRECO_DO_DIA",
       originalPrice: 7550.0,
     });
     const s7Updated = calculateFinalPrice({
+      name: "IPHONE 17 PRO MAX 256GB",
+      model: "IPHONE 17 PRO MAX",
       categorySlug: "iphone",
       condition: "NOVO_LACRADO",
       priceSource: "PRECO_DO_DIA",
       originalPrice: 7600.0,
     });
 
-    const s7Passed = s7Initial.finalPrice === 7750.0 && s7Updated.finalPrice === 7800.0;
+    const s7Passed = s7Initial.finalPrice === 7850.0 && s7Updated.finalPrice === 7900.0;
     results.push({
       scenario: 7,
-      description: "Alteração de preço original (7.550 -> 7.600) -> recalcula automaticamente (7.800)",
+      description: "Alteração de preço original (7.550 -> 7.600) -> recalcula automaticamente (7.900)",
       passed: s7Passed,
       details: `Preço anterior: R$ ${s7Initial.finalPrice} -> Novo preço final: R$ ${s7Updated.finalPrice}`,
     });
@@ -195,15 +199,15 @@ async function runTests() {
     // -------------------------------------------------------------------------
     // CENÁRIO 8: Alteração de preço NÃO duplica margem.
     // -------------------------------------------------------------------------
-    // Regra: R$ 7.550 + 200 = 7.750. Se fornecedor sobe para 7.600, novo preço DEVE ser 7.800.
-    // ERRADO seria: 7.750 + 200 = 7.950.
+    // Regra: R$ 7.550 + 300 = 7.850. Se fornecedor sobe para 7.600, novo preço DEVE ser 7.900.
+    // ERRADO seria: 7.850 + 300 = 8.150.
     const finalPriceVal: number = s7Updated.finalPrice;
-    const s8Passed = finalPriceVal === 7800.0 && (finalPriceVal as number) !== 7950.0;
+    const s8Passed = finalPriceVal === 7900.0 && (finalPriceVal as number) !== 8150.0;
     results.push({
       scenario: 8,
-      description: "Alteração de preço NÃO duplica margem (não acumula 7.750 + 200 = 7.950)",
+      description: "Alteração de preço NÃO duplica margem (não acumula 7.850 + 300 = 8.150)",
       passed: s8Passed,
-      details: `Resultado obtido: R$ ${s7Updated.finalPrice} | Não permitiu o valor acumulado incorreto R$ 7.950`,
+      details: `Resultado obtido: R$ ${s7Updated.finalPrice} | Não permitiu o valor acumulado incorreto R$ 8.150`,
     });
 
     // -------------------------------------------------------------------------
