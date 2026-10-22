@@ -139,10 +139,12 @@ async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncM
     if (!p.name || !p.price || p.price <= 0) continue;
     const name = String(p.name).toUpperCase().trim();
 
-    // Filtros de exclusão (apenas produtos genuínos Apple)
+    // Filtros de exclusão (apenas produtos genuínos Apple lacrados/seminovos permitidos)
     if (
       name.includes("AS IS") ||
+      name.includes("AS-IS") ||
       name.includes("ASIS") ||
+      name.includes("CPO") ||
       name.includes("SAMSUNG") ||
       name.includes("XIAOMI") ||
       name.includes("MOTOROLA") ||
