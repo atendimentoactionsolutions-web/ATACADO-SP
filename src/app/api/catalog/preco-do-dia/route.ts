@@ -144,23 +144,38 @@ export async function GET(req: NextRequest) {
       total: products.length,
       lastUpdated: lastProduct?.updatedAt || new Date(),
       categories,
-      products: products.map((p) => ({
-        id: p.id,
-        name: p.name,
-        category: p.category.name,
-        categorySlug: p.category.slug,
-        subcategory: p.subcategory?.name || null,
-        model: p.model,
-        storage: p.storage,
-        ram: p.ram,
-        color: p.color,
-        condition: p.condition,
-        conditionLabel: "Novo Lacrado",
-        price: p.finalPrice,
-        priceSource: p.priceSource,
-        active: p.active,
-        updatedAt: p.updatedAt,
-      })),
+      products: products.map((p) => {
+        // Verificação matemática estrita em tempo de resposta:
+        // Garante que o preço exibido é SEMPRE fiel à fórmula originalPrice + margem oficial
+        const verified = calculateFinalPrice({
+          name: p.name,
+          model: p.model,
+          categorySlug: p.category.slug,
+          categoryName: p.category.name,
+          condition: p.condition,
+          priceSource: p.priceSource,
+          originalPrice: p.originalPrice,
+          customMargin: 0,
+        });
+
+        return {
+          id: p.id,
+          name: p.name,
+          category: p.category.name,
+          categorySlug: p.category.slug,
+          subcategory: p.subcategory?.name || null,
+          model: p.model,
+          storage: p.storage,
+          ram: p.ram,
+          color: p.color,
+          condition: p.condition,
+          conditionLabel: "Novo Lacrado",
+          price: verified.finalPrice,
+          priceSource: p.priceSource,
+          active: p.active,
+          updatedAt: p.updatedAt,
+        };
+      }),
     });
   } catch (error: any) {
     console.error("Erro na API do catálogo:", error);
