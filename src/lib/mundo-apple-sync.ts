@@ -264,9 +264,13 @@ async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncM
     });
 
     if (existing) {
-      const priceChanged = existing.originalPrice !== calc.originalPrice;
+      const priceChanged =
+        existing.originalPrice !== calc.originalPrice ||
+        existing.margin !== calc.margin ||
+        existing.finalPrice !== calc.finalPrice ||
+        !existing.active;
 
-      if (priceChanged || !existing.ram && item.ram) {
+      if (priceChanged || (!existing.ram && item.ram)) {
         await prisma.product.update({
           where: { id: existing.id },
           data: {
