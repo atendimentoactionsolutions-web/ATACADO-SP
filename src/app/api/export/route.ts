@@ -26,23 +26,36 @@ export async function GET(req: NextRequest) {
       orderBy: [{ category: { order: "asc" } }, { finalPrice: "asc" }],
     });
 
-    const exportRows = products.map((p) => ({
-      ID: p.id,
-      Categoria: p.category.name,
-      Subcategoria: p.subcategory?.name || "",
-      Produto: p.name,
-      Modelo: p.model,
-      Capacidade: p.storage || "",
-      RAM: p.ram || "",
-      Cor: p.color || "",
-      Condicao: "Novo / Lacrado",
-      Fonte: "Preço do Dia",
-      "Preco Original (R$)": p.originalPrice,
-      "Margem Aplicada (R$)": p.margin,
-      "Preco Final (R$)": p.finalPrice,
-      "Preco Final Formatado": formatBRL(p.finalPrice),
-      "Ultima Atualizacao": p.updatedAt.toISOString(),
-    }));
+    const exportRows = products.map((p) => {
+      const verified = calculateFinalPrice({
+        name: p.name,
+        model: p.model,
+        categorySlug: p.category.slug,
+        categoryName: p.category.name,
+        condition: p.condition,
+        priceSource: p.priceSource,
+        originalPrice: p.originalPrice,
+        customMargin: 0,
+      });
+
+      return {
+        ID: p.id,
+        Categoria: p.category.name,
+        Subcategoria: p.subcategory?.name || "",
+        Produto: p.name,
+        Modelo: p.model,
+        Capacidade: p.storage || "",
+        RAM: p.ram || "",
+        Cor: p.color || "",
+        Condicao: "Novo / Lacrado",
+        Fonte: "Preço do Dia",
+        "Preco Original (R$)": verified.originalPrice,
+        "Margem Aplicada (R$)": verified.margin,
+        "Preco Final (R$)": verified.finalPrice,
+        "Preco Final Formatado": formatBRL(verified.finalPrice),
+        "Ultima Atualizacao": p.updatedAt.toISOString(),
+      };
+    });
 
     const dateStr = new Date().toISOString().split("T")[0];
 
