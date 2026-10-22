@@ -74,9 +74,11 @@ async function runTests() {
     });
 
     // -------------------------------------------------------------------------
-    // CENÁRIO 3: iPad novo no Preço do Dia -> aparece sem +R$ 200.
+    // CENÁRIO 3: iPad novo no Preço do Dia -> recebe margem oficial de iPad (+R$ 180).
     // -------------------------------------------------------------------------
     const s3Calc = calculateFinalPrice({
+      name: "IPAD 11 128GB",
+      model: "IPAD 11",
       categorySlug: "ipad",
       condition: "NOVO_LACRADO",
       priceSource: "PRECO_DO_DIA",
@@ -88,18 +90,20 @@ async function runTests() {
       active: true,
     });
 
-    const s3Passed = s3Calc.margin === 0 && s3Calc.finalPrice === 4100.0 && s3Eligible;
+    const s3Passed = s3Calc.margin === 180 && s3Calc.finalPrice === 4280.0 && s3Eligible;
     results.push({
       scenario: 3,
-      description: "iPad novo no Preço do Dia -> aparece no catálogo sem os +R$ 200",
+      description: "iPad novo no Preço do Dia -> recebe margem oficial de iPad (+R$ 180)",
       passed: s3Passed,
-      details: `Margem: R$ ${s3Calc.margin} | Final: R$ ${s3Calc.finalPrice} | Elegível Catálogo: ${s3Eligible} (Esperado: true, sem +200)`,
+      details: `Margem: R$ ${s3Calc.margin} | Final: R$ ${s3Calc.finalPrice} | Elegível Catálogo: ${s3Eligible} (Esperado: R$ 4.280)`,
     });
 
     // -------------------------------------------------------------------------
-    // CENÁRIO 4: MacBook novo -> aparece conforme preço configurado (sem +200).
+    // CENÁRIO 4: MacBook novo -> recebe margem oficial de MacBook Air (+R$ 400) / Pro (+R$ 600) / Max (+R$ 800).
     // -------------------------------------------------------------------------
     const s4Calc = calculateFinalPrice({
+      name: "MACBOOK AIR M4 16GB 256GB",
+      model: "MACBOOK AIR M4",
       categorySlug: "mac",
       condition: "NOVO_LACRADO",
       priceSource: "PRECO_DO_DIA",
@@ -112,10 +116,10 @@ async function runTests() {
       active: true,
     });
 
-    const s4Passed = s4Calc.margin === 0 && s4Calc.finalPrice === 7990.0 && s4Eligible;
+    const s4Passed = s4Calc.margin === 400 && s4Calc.finalPrice === 8390.0 && s4Eligible;
     results.push({
       scenario: 4,
-      description: "MacBook novo -> aparece conforme preço original configurado sem +R$ 200",
+      description: "MacBook Air novo -> recebe margem oficial de MacBook Air (+R$ 400)",
       passed: s4Passed,
       details: `Original: R$ 7.990 | Margem: R$ ${s4Calc.margin} | Final: R$ ${s4Calc.finalPrice} | Elegível: ${s4Eligible}`,
     });
