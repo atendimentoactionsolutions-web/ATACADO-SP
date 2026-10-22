@@ -208,6 +208,8 @@ export async function POST(req: NextRequest) {
 
     const calc = calculateFinalPrice(
       {
+        name: name.trim(),
+        model: model ? model.trim() : name.trim(),
         categorySlug: category.slug,
         categoryName: category.name,
         condition,

@@ -110,16 +110,21 @@ export async function PUT(
     const marginSetting = await prisma.setting.findUnique({ where: { key: "iphone_margin" } });
     const roundingSetting = await prisma.setting.findUnique({ where: { key: "rounding_mode" } });
 
+    const targetName = name !== undefined ? name.trim() : existing.name;
+    const targetModel = model !== undefined ? model.trim() : existing.model;
+
     // RECALCULO AUTOMÁTICO SEM ACUMULAR MARGEM
     // Formula: preco_final = preco_original + margem
     const calc = calculateFinalPrice(
       {
+        name: targetName,
+        model: targetModel,
         categorySlug: category.slug,
         categoryName: category.name,
         condition: targetCondition,
         priceSource: targetPriceSource,
         originalPrice: parsedOriginalPrice,
-        customMargin: customMargin !== undefined ? parseFloat(customMargin) : existing.margin,
+        customMargin: customMargin !== undefined ? parseFloat(customMargin) : 0,
       },
       {
         iphoneMargin: marginSetting ? parseFloat(marginSetting.value) : 200,
