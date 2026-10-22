@@ -233,6 +233,7 @@ async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncM
   let createdCount = 0;
   let updatedCount = 0;
   let unchangedCount = 0;
+  const seenIds = new Set<string>();
 
   // 5. Inserir ou atualizar na base iFindz como PRECO_DO_DIA
   for (const item of Array.from(grouped.values())) {
@@ -264,6 +265,7 @@ async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncM
     });
 
     if (existing) {
+      seenIds.add(existing.id);
       const priceChanged =
         existing.originalPrice !== calc.originalPrice ||
         existing.margin !== calc.margin ||
@@ -314,6 +316,8 @@ async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncM
         },
       });
 
+      seenIds.add(created.id);
+
       await recordPriceHistory({
         productId: created.id,
         oldPrice: calc.originalPrice,
@@ -326,6 +330,18 @@ async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncM
 
       createdCount++;
     }
+  }
+
+  // 6. Desativar produtos PRECO_DO_DIA que saíram de linha/estoque hoje (apenas se a lista ao vivo estiver saudável)
+  if (grouped.size >= 50 && seenIds.size >= 50) {
+    await prisma.product.updateMany({
+      where: {
+        priceSource: "PRECO_DO_DIA",
+        active: true,
+        id: { notIn: Array.from(seenIds) },
+      },
+      data: { active: false },
+    });
   }
 
   await logAudit({
