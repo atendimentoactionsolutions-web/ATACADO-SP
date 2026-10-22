@@ -19,21 +19,35 @@ async function runTests() {
 
   try {
     // -------------------------------------------------------------------------
-    // CENÁRIO 1: iPhone novo no Preço do Dia -> +R$ 200.
+    // CENÁRIO 1: iPhone 17 novo no Preço do Dia -> +R$ 300 (Linha 18 -> +R$ 500).
     // -------------------------------------------------------------------------
     const s1Calc = calculateFinalPrice({
+      name: "IPHONE 17 PRO MAX 256GB",
+      model: "IPHONE 17 PRO MAX",
       categorySlug: "iphone",
       condition: "NOVO_LACRADO",
       priceSource: "PRECO_DO_DIA",
       originalPrice: 7550.0,
     });
+    const s1Calc18 = calculateFinalPrice({
+      name: "IPHONE 18 PRO MAX 256GB",
+      model: "IPHONE 18 PRO MAX",
+      categorySlug: "iphone",
+      condition: "NOVO_LACRADO",
+      priceSource: "PRECO_DO_DIA",
+      originalPrice: 8000.0,
+    });
 
-    const s1Passed = s1Calc.margin === 200 && s1Calc.finalPrice === 7750.0;
+    const s1Passed =
+      s1Calc.margin === 300 &&
+      s1Calc.finalPrice === 7850.0 &&
+      s1Calc18.margin === 500 &&
+      s1Calc18.finalPrice === 8500.0;
     results.push({
       scenario: 1,
-      description: "iPhone novo no Preço do Dia -> recebe margem de +R$ 200,00",
+      description: "iPhone novo no Preço do Dia -> recebe margem oficial (+R$ 300 iPhone 17 / +R$ 500 iPhone 18)",
       passed: s1Passed,
-      details: `Preço Original: R$ 7.550 | Margem: R$ ${s1Calc.margin} | Preço Final: R$ ${s1Calc.finalPrice} (Esperado: R$ 7.750)`,
+      details: `iPhone 17: 7.550 + ${s1Calc.margin} = ${s1Calc.finalPrice} | iPhone 18: 8.000 + ${s1Calc18.margin} = ${s1Calc18.finalPrice}`,
     });
 
     // -------------------------------------------------------------------------
