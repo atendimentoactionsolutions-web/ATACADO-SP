@@ -164,7 +164,18 @@ async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncM
       continue;
     }
 
-    const isSemi = p.category === "SEMI" || name.includes("SEMI") || name.includes("USADO") || name.includes("VITRINE");
+    const isSemi =
+      p.isSeminovo === true ||
+      p.condition === "SEMINOVO" ||
+      p.category === "SEMI" ||
+      name.includes("SEMI") ||
+      name.includes("USADO") ||
+      name.includes("VITRINE") ||
+      name.includes("GRADE A") ||
+      name.includes("GRADE B") ||
+      name.includes("SWAP") ||
+      name.includes("SWP") ||
+      name.includes("RECONDICIONADO");
     const condition = isSemi ? "SEMINOVO" : "NOVO_LACRADO";
     const storage = (p.storage || "").trim();
     const color = (p.color || "").trim();
