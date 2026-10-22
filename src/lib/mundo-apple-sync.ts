@@ -24,16 +24,35 @@ export interface SyncMundoAppleResult {
   dollarVariation?: number;
 }
 
+// Lock global para impedir execuções concorrentes de sincronização
+const globalSyncLock = globalThis as unknown as {
+  isRunningMundoAppleSync?: boolean;
+  lastSyncPromise?: Promise<SyncMundoAppleResult>;
+};
+
 /**
- * Conecta exclusivamente ao site Mundo Apple Buscador (https://mundo-apple-buscador.onrender.com)
+ * Conecta ao Mundo Apple Buscador (priorizando a instância local na VPS em http://127.0.0.1:3333)
  * com as credenciais fornecidas pelo usuário:
  * USUARIO: admin
  * SENHA: fornecedor2026!
  *
- * Puxa todos os preços do dia oficiais, aplica a regra de +R$ 200 em iPhones Novos/Lacrados
- * e sincroniza no Preço do Dia!
+ * Puxa todos os preços do dia oficiais, aplica a tabela de margens oficial ATACADO SP
+ * e sincroniza com precisão absoluta no Preço do Dia!
  */
 export async function syncMundoAppleLive(userResponsible = "Sincronização Mundo Apple"): Promise<SyncMundoAppleResult> {
+  if (globalSyncLock.isRunningMundoAppleSync && globalSyncLock.lastSyncPromise) {
+    return globalSyncLock.lastSyncPromise;
+  }
+
+  globalSyncLock.isRunningMundoAppleSync = true;
+  globalSyncLock.lastSyncPromise = executeSyncMundoAppleLive(userResponsible).finally(() => {
+    globalSyncLock.isRunningMundoAppleSync = false;
+  });
+
+  return globalSyncLock.lastSyncPromise;
+}
+
+async function executeSyncMundoAppleLive(userResponsible: string): Promise<SyncMundoAppleResult> {
   let catalogPayload: any = null;
   let activeUrl = MUNDO_APPLE_URLS[0];
   let lastError = "";
